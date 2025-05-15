@@ -23,7 +23,7 @@ const {
   getMarketers,
   getCampaignsForMarketer,
   getPromotedLinksForCampaign,
-} = require("./common");
+} = require("./api");
 const configuration_workflow = () =>
   new Workflow({
     steps: [

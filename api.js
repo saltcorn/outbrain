@@ -1,3 +1,4 @@
+const { objectToQueryString } = require("@saltcorn/data/utils");
 const fetch = require("node-fetch");
 
 const base = "https://api.outbrain.com/amplify/v0.1";
@@ -33,9 +34,19 @@ const getPromotedLinksForCampaign = async (campaignId, cfg) => {
   return await getAPI(`/campaigns/${campaignId}/promotedLinks`, cfg);
 };
 
+const getPromotedContentReport = async (marketerId, q, cfg) => {
+  //https://private-anon-3cbd964d5b-amplifyv01.apiary-mock.com/reports/marketers/abf4b02153ee75f3cadc4fc128ab0419ab/promotedContent?from=2015-12-22&to=2016-01-20&limit=10&offset=3&sort=-ctr&filter=clicks+gt+99&includeArchivedCampaigns=true&budgetId=adc4fc128ab0419ababf4b02153ee75f3c&campaignId=e75f3cadc4fc128ab0419ababf4b02153e, 0069fc0fe9598f99b4c528f0881cd74b4b&promotedLinkId=19ababf4b02153ee75f3cadc4fc128ab04&includeConversionDetails=false&conversionsByClickDate=true
+  const qs = objectToQueryString(q) || "";
+  return await getAPI(
+    `/reports/marketers/${marketerId}/promotedContent?${qs}`,
+    cfg
+  );
+};
+
 module.exports = {
   getMarketers,
   getCampaign,
   getCampaignsForMarketer,
   getPromotedLinksForCampaign,
+  getPromotedContentReport,
 };
