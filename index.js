@@ -23,6 +23,7 @@ const {
   getMarketers,
   getCampaignsForMarketer,
   getPromotedLinksForCampaign,
+  getPromotedContentReport,
 } = require("./api");
 const configuration_workflow = () =>
   new Workflow({
@@ -77,9 +78,53 @@ module.exports = {
       description: "Get Outbrain promoted links for campaign",
       arguments: [{ name: "campaignId", type: "String" }],
     },
+    get_outbrain_promoted_content_report: {
+      async run(marketerId, query) {
+        /* Query example: 
+        {
+          from: "2015-12-22",
+          to: "2016-01-20",
+          limit: 10,
+          offset: 3,
+          sort: "-ctr",
+          filter: "clicks+gt+99",
+          includeArchivedCampaigns: true,
+          budgetId: "adc4fc128ab0419ababf4b02153ee75f3c",
+          campaignId:
+            "e75f3cadc4fc128ab0419ababf4b02153e, 0069fc0fe9598f99b4c528f0881cd74b4b",
+          promotedLinkId: "19ababf4b02153ee75f3cadc4fc128ab04",
+          includeConversionDetails: false,
+          conversionsByClickDate: true,
+        };
+        */
+        return await getPromotedContentReport(marketerId, query, cfg);
+      },
+      isAsync: true,
+      description: "Get Outbrain promoted links for campaign",
+      arguments: [
+        { name: "marketerId", type: "String" },
+        { name: "query", type: "JSON" },
+      ],
+    },
   }),
   actions: (cfg) => ({
     //outbrain_sync: require("./sync-action")(cfg),
     //caldav_edit: require("./add-action")(cfg),
   }),
+};
+
+let x = {
+  from: "2015-12-22",
+  to: "2016-01-20",
+  limit: 10,
+  offset: 3,
+  sort: "-ctr",
+  filter: "clicks+gt+99",
+  includeArchivedCampaigns: "true",
+  budgetId: "adc4fc128ab0419ababf4b02153ee75f3c",
+  campaignId:
+    "e75f3cadc4fc128ab0419ababf4b02153e, 0069fc0fe9598f99b4c528f0881cd74b4b",
+  promotedLinkId: "19ababf4b02153ee75f3cadc4fc128ab04",
+  includeConversionDetails: "false",
+  conversionsByClickDate: "true",
 };
