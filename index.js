@@ -19,7 +19,11 @@ const {
 } = require("@saltcorn/markup/tags");
 const { mkTable } = require("@saltcorn/markup");
 const { readState } = require("@saltcorn/data/plugin-helper");
-const { getMarketers, getCampaignsForMarketer } = require("./common");
+const {
+  getMarketers,
+  getCampaignsForMarketer,
+  getPromotedLinksForCampaign,
+} = require("./common");
 const configuration_workflow = () =>
   new Workflow({
     steps: [
@@ -64,6 +68,14 @@ module.exports = {
       isAsync: true,
       description: "Get Outbrain campagigns for marketer",
       arguments: [{ name: "marketerId", type: "String" }],
+    },
+    get_outbrain_campaign_promoted_links: {
+      async run(campaignId) {
+        return await getPromotedLinksForCampaign(campaignId, cfg);
+      },
+      isAsync: true,
+      description: "Get Outbrain campagigns for marketer",
+      arguments: [{ name: "campaignId", type: "String" }],
     },
   }),
   actions: (cfg) => ({

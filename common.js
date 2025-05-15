@@ -28,4 +28,14 @@ const getCampaignsForMarketer = async (marketerId, cfg) => {
   return await getAPI(`/marketers/${marketerId}/campaigns`, cfg);
 };
 
-module.exports = { getMarketers, getCampaign, getCampaignsForMarketer };
+const getPromotedLinksForCampaign = async (campaignId, cfg) => {
+  // /campaigns/abf4b02153ee75f3cadc4fc128ab0419ab/promotedLinks?enabled=true&statuses=APPROVED,PENDING,REJECTED&limit=200&offset=3&sort=-creationTime&promotedLinkImageWidth=100&promotedLinkImageHeight=100
+  return await getAPI(`/campaigns/${campaignId}/promotedLinks`, cfg);
+};
+
+module.exports = {
+  getMarketers,
+  getCampaign,
+  getCampaignsForMarketer,
+  getPromotedLinksForCampaign,
+};
