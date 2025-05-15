@@ -3,21 +3,29 @@ const fetch = require("node-fetch");
 const base = "https://api.outbrain.com/amplify/v0.1";
 
 const getAPI = async (urlPath, { token }) => {
-  const url = `${base}/`;
-  const response = await fetch(`${base}${urlPath}`);
+  const response = await fetch(`${base}${urlPath}`, {
+    headers: {
+      "ob-token-v1": token,
+    },
+  });
   return await response.json();
 };
 
 //https://private-anon-3cbd964d5b-amplifyv01.apiary-mock.com/marketers
 
-const getMarketers = async (opts) => {
-  return await getAPI(`/marketers`, opts);
+const getMarketers = async (cfg) => {
+  return await getAPI(`/marketers`, cfg);
 };
 
-const getCampaign = async (campaignId, { token }) => {
+const getCampaign = async (campaignId, cfg) => {
   /*
-https://private-anon-3cbd964d5b-amplifyv01.apiary-mock.com/campaigns/00f4b02153ee75f3c9dc4fc128ab0411ab,00f863c5674af5c5f63415500f699a04e5/multiple?extraFields=CustomAudience,Locations,InterestsTargeting,BidBySections,BlockedSites,PlatformTargeting,CampaignOptimization,Scheduling,IABCategories,CampaignPixels
-*/
+GEThttps://private-anon-3cbd964d5b-amplifyv01.apiary-mock.com/campaigns/00f4b02153ee75f3c9dc4fc128ab0411ab?extraFields=CustomAudience,Locations,InterestsTargeting,BidBySections,BlockedSites,PlatformTargeting,CampaignOptimization,Scheduling,IABCategories,CampaignPixels*/
+  const url = `/campaigns/${campaignId}?extraFields=CustomAudience,Locations,InterestsTargeting,BidBySections,BlockedSites,PlatformTargeting,CampaignOptimization,Scheduling,IABCategories,CampaignPixels`;
+  return await getAPI(url, cfg);
 };
 
-module.exports = { getMarketers };
+const getCampaignsForMarketer = async (marketerId, cfg) => {
+  return await getAPI(`/marketers/${marketerId}/campaigns`, cfg);
+};
+
+module.exports = { getMarketers, getCampaign, getCampaignsForMarketer };
