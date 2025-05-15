@@ -66,7 +66,7 @@ module.exports = {
         return await getCampaignsForMarketer(marketerId, cfg);
       },
       isAsync: true,
-      description: "Get Outbrain campagigns for marketer",
+      description: "Get Outbrain campaigns for marketer",
       arguments: [{ name: "marketerId", type: "String" }],
     },
     get_outbrain_campaign_promoted_links: {
@@ -74,7 +74,7 @@ module.exports = {
         return await getPromotedLinksForCampaign(campaignId, cfg);
       },
       isAsync: true,
-      description: "Get Outbrain campagigns for marketer",
+      description: "Get Outbrain promoted links for campaign",
       arguments: [{ name: "campaignId", type: "String" }],
     },
   }),
