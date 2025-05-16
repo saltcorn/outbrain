@@ -55,24 +55,24 @@ module.exports = {
   //table_providers: require("./table-provider.js"),
   functions: (cfg) => ({
     get_outbrain_marketers: {
-      async run() {
-        return await getMarketers(cfg);
+      async run(query) {
+        return await getMarketers(query, cfg);
       },
       isAsync: true,
       description: "Get Outbrain marketers",
       arguments: [],
     },
     get_outbrain_marketer_campaigns: {
-      async run(marketerId) {
-        return await getCampaignsForMarketer(marketerId, cfg);
+      async run(marketerId, query) {
+        return await getCampaignsForMarketer(marketerId, query, cfg);
       },
       isAsync: true,
       description: "Get Outbrain campaigns for marketer",
       arguments: [{ name: "marketerId", type: "String" }],
     },
     get_outbrain_campaign_promoted_links: {
-      async run(campaignId) {
-        return await getPromotedLinksForCampaign(campaignId, cfg);
+      async run(campaignId, query) {
+        return await getPromotedLinksForCampaign(campaignId, query, cfg);
       },
       isAsync: true,
       description: "Get Outbrain promoted links for campaign",
