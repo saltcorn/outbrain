@@ -12,6 +12,19 @@ const getAPI = async (urlPath, { token }) => {
   return await response.json();
 };
 
+const postAPI = async (urlPath, body, { token }) => {
+  const response = await fetch(`${base}${urlPath}`, {
+    method: "POST",
+    headers: {
+      "ob-token-v1": token,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  return await response.json();
+};
+
 //https://private-anon-3cbd964d5b-amplifyv01.apiary-mock.com/marketers
 
 const getMarketers = async (q, cfg) => {
@@ -38,6 +51,10 @@ const getPromotedLinksForCampaign = async (campaignId, q, cfg) => {
   return await getAPI(`/campaigns/${campaignId}/promotedLinks?${qs}`, cfg);
 };
 
+const postPromotedLinkForCampaign = async (campaignId, adSpec, cfg) => {
+  return await postAPI(`/campaigns/${campaignId}/promotedLinks`, adSpec, cfg);
+};
+
 const getPromotedContentReport = async (marketerId, q, cfg) => {
   // /reports/marketers/abf4b02153ee75f3cadc4fc128ab0419ab/promotedContent?from=2015-12-22&to=2016-01-20&limit=10&offset=3&sort=-ctr&filter=clicks+gt+99&includeArchivedCampaigns=true&budgetId=adc4fc128ab0419ababf4b02153ee75f3c&campaignId=e75f3cadc4fc128ab0419ababf4b02153e, 0069fc0fe9598f99b4c528f0881cd74b4b&promotedLinkId=19ababf4b02153ee75f3cadc4fc128ab04&includeConversionDetails=false&conversionsByClickDate=true
   const qs = objectToQueryString(q || {}) || "";
@@ -53,4 +70,5 @@ module.exports = {
   getCampaignsForMarketer,
   getPromotedLinksForCampaign,
   getPromotedContentReport,
+  postPromotedLinkForCampaign,
 };

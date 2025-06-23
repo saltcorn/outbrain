@@ -24,6 +24,7 @@ const {
   getCampaignsForMarketer,
   getPromotedLinksForCampaign,
   getPromotedContentReport,
+  postPromotedLinkForCampaign,
 } = require("./api");
 const configuration_workflow = () =>
   new Workflow({
@@ -77,6 +78,17 @@ module.exports = {
       isAsync: true,
       description: "Get Outbrain promoted links for campaign",
       arguments: [{ name: "campaignId", type: "String" }],
+    },
+    create_outbrain_campaign_promoted_link: {
+      async run(campaignId, adSpec) {
+        return await postPromotedLinkForCampaign(campaignId, adSpec, cfg);
+      },
+      isAsync: true,
+      description: "Create new promoted link",
+      arguments: [
+        { name: "campaignId", type: "String" },
+        { name: "adSpec", type: "JSON" },
+      ],
     },
     get_outbrain_promoted_content_report: {
       async run(marketerId, query) {
