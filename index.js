@@ -4,6 +4,8 @@ const Field = require("@saltcorn/data/models/field");
 const Table = require("@saltcorn/data/models/table");
 const FieldRepeat = require("@saltcorn/data/models/fieldrepeat");
 const Workflow = require("@saltcorn/data/models/workflow");
+const Plugin = require("@saltcorn/data/models/plugin");
+const { getState } = require("@saltcorn/data/db/state");
 const { eval_expression } = require("@saltcorn/data/models/expression");
 const {
   text,
@@ -117,6 +119,29 @@ module.exports = {
         { name: "marketerId", type: "String" },
         { name: "query", type: "JSON" },
       ],
+    },
+    update_outbrain_token: {
+      isAsync: true,
+      description: "Set global Outbrain token",
+      arguments: [{ name: "token", type: "String" }],
+      run: async (token) => {
+        let plugin = await Plugin.findOne({ name: "outbrain" });
+        if (!plugin) {
+          plugin = await Plugin.findOne({
+            name: "@saltcorn/outbrain",
+          });
+        }
+        const newConfig = {
+          ...(plugin.configuration || {}),
+          token,
+        };
+        plugin.configuration = newConfig;
+        await plugin.upsert();
+        getState().processSend({
+          refresh_plugin_cfg: plugin.name,
+          tenant: db.getTenantSchema(),
+        });
+      },
     },
   }),
   actions: (cfg) => ({
